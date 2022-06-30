@@ -172,8 +172,9 @@ public class S3SinkConnectorConfig extends StorageSinkConnectorConfig {
   public static final String HEADERS_FORMAT_CLASS_CONFIG = "headers.format.class";
   public static final Class<? extends Format> HEADERS_FORMAT_CLASS_DEFAULT = AvroFormat.class;
 
-  private final String name;
+  public static final String HEADER_PARTITION_FIELDS = "header.partition.fields";
 
+  private final String name;
   private final Map<String, ComposableConfig> propertyToConfig = new HashMap<>();
   private final Set<AbstractConfig> allConfigs = new HashSet<>();
 
@@ -247,6 +248,18 @@ public class S3SinkConnectorConfig extends StorageSinkConnectorConfig {
     {
       final String group = "S3";
       int orderInGroup = 0;
+
+      configDef.define(
+          HEADER_PARTITION_FIELDS,
+          Type.STRING,
+          "",
+          Importance.LOW,
+          "Header fields to use in prepending to partition path",
+          group,
+          ++orderInGroup,
+          Width.LONG,
+          "Header fields to use in partition path"
+      );
 
       configDef.define(
           S3_BUCKET_CONFIG,
